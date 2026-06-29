@@ -7,33 +7,29 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     
     * {
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Inter', sans-serif;
     }
     
     body {
-        background: #0f0f14;
-        overflow-x: hidden;
+        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
     }
     
-    .bg-grid {
-        background-image: 
-            linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
-        background-size: 50px 50px;
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
     
     .glass {
-        background: rgba(24, 25, 34, 0.7);
+        background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    
-    .banner-gradient {
-        background: linear-gradient(180deg, transparent 0%, rgba(24, 25, 34, 1) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .status-online { background: #23a55a; }
@@ -47,40 +43,61 @@
         height: 128px;
     }
     
-    .avatar-deco {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 150px;
-        height: 150px;
-        pointer-events: none;
-        z-index: 10;
-    }
-    
     .avatar-img {
         width: 128px;
         height: 128px;
         border-radius: 50%;
         object-fit: cover;
-        border: 6px solid #181922;
-        cursor: pointer;
-        transition: transform 0.3s ease;
     }
     
-    .avatar-img:hover {
-        transform: scale(1.05);
+    .avatar-deco {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 10;
     }
     
     .status-indicator {
         position: absolute;
-        bottom: 8px;
-        right: 8px;
-        width: 28px;
-        height: 28px;
+        bottom: 4px;
+        right: 4px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
-        border: 6px solid #181922;
-        z-index: 11;
+        border: 6px solid #1a1b1e;
+        z-index: 20;
+    }
+    
+    .activity-card {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.3s ease;
+    }
+    
+    .activity-card:hover {
+        background: rgba(0, 0, 0, 0.4);
+        border-color: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+    }
+    
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        transition: all 0.2s ease;
+    }
+    
+    .badge:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.1);
     }
     
     .loading-screen {
@@ -89,11 +106,11 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: #0f0f14;
         z-index: 9999;
         display: flex;
         align-items: center;
         justify-content: center;
+        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
         transition: opacity 0.5s ease, visibility 0.5s ease;
     }
     
@@ -103,90 +120,79 @@
     }
     
     .loader {
-        width: 50px;
-        height: 50px;
-        border: 3px solid rgba(88, 101, 242, 0.2);
-        border-top-color: #5865F2;
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(255, 255, 255, 0.1);
+        border-top: 4px solid #5865f2;
         border-radius: 50%;
-        animation: spin 0.8s linear infinite;
+        animation: spin 1s linear infinite;
     }
     
     @keyframes spin {
-        to { transform: rotate(360deg); }
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
     
-    .fade-in {
-        animation: fadeIn 0.6s ease-out;
+    .pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
     
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
     }
     
-    .progress-bar {
-        background: linear-gradient(90deg, #1DB954 0%, #1ed760 100%);
-        transition: width 0.3s ease;
-    }
-    
-    .activity-card, .spotify-card {
-        transition: all 0.3s ease;
-    }
-    
-    .activity-card:hover, .spotify-card:hover {
-        transform: translateY(-2px);
-        background: rgba(255, 255, 255, 0.05);
-    }
-    
-    .social-icon {
-        transition: all 0.3s ease;
-    }
-    
-    .social-icon:hover {
-        transform: translateY(-3px) scale(1.1);
-    }
-    
-    .badge {
-        transition: transform 0.2s ease;
-    }
-    
-    .badge:hover {
-        transform: scale(1.15);
-    }
-    
-    .modal-overlay {
+    .modal {
+        display: none;
         position: fixed;
-        top: 0;
+        z-index: 1000;
         left: 0;
+        top: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(8px);
-        z-index: 9998;
-        display: flex;
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
         align-items: center;
         justify-content: center;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        padding: 1rem;
+        padding: 16px;
     }
     
-    .modal-overlay.active {
-        opacity: 1;
-        visibility: visible;
+    .modal.active {
+        display: flex;
     }
     
     .modal-content {
-        transform: scale(0.9);
-        transition: transform 0.3s ease;
+        animation: modalSlideIn 0.3s ease;
+        max-width: 100%;
     }
     
-    .modal-overlay.active .modal-content {
-        transform: scale(1);
+    @keyframes modalSlideIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9) translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
     }
     
-    @media (max-width: 450px) {
+    .progress-bar {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-top: 8px;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #5865f2 0%, #7289da 100%);
+        border-radius: 2px;
+        transition: width 0.3s ease;
+    }
+    
+    @media (max-width: 390px) {
         .avatar-wrapper {
             width: 112px;
             height: 112px;
@@ -196,490 +202,335 @@
             height: 112px;
         }
         .avatar-deco {
-            width: 132px;
-            height: 132px;
-        }
-        .status-indicator {
-            width: 24px;
-            height: 24px;
-            border-width: 5px;
+            width: 134px;
+            height: 134px;
         }
     }
 </style>
 </head>
-<body class="bg-grid min-h-screen flex items-center justify-center p-4 md:p-6">
-<!-- Loading Screen -->
-<div id="loadingScreen" class="loading-screen">
-    <div class="text-center">
-        <div class="loader mx-auto mb-4"></div>
-        <p class="text-gray-400 text-sm">Loading profile...</p>
-    </div>
-</div>
-
-<!-- Avatar Profile Modal -->
-<div id="profileModal" class="modal-overlay">
-    <div class="modal-content glass rounded-2xl max-w-md w-full overflow-hidden shadow-2xl">
-        <div class="relative">
-           <img id="modalBanner" src="./azura.webp" alt="Banner" class="w-full h-32 object-cover">
-            <button id="closeModal" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center text-white transition-all">
-                <i class="fas fa-times text-sm"></i>
-            </button>
-        </div>
-        <div class="p-6 pt-0">
-            <div class="flex items-end -mt-12 mb-4">
-                <div class="relative">
-                    <img id="modalAvatar" src="" alt="Avatar" class="w-24 h-24 rounded-full border-4 border-[#181922]">
-                    <div id="modalStatus" class="absolute bottom-1 right-1 w-7 h-7 rounded-full border-4 border-[#181922] status-offline"></div>
-                </div>
-            </div>
-            
-            <div class="space-y-4">
-                <div>
-                    <h3 id="modalUsername" class="text-2xl font-bold text-white mb-1">Loading...</h3>
-                    <p id="modalUserTag" class="text-gray-400 text-sm">@username</p>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-white/5 rounded-lg p-3">
-                        <p class="text-gray-400 text-xs mb-1">User ID</p>
-                        <p id="modalUserId" class="text-white text-sm font-mono break-all">-</p>
-                    </div>
-                    <div class="bg-white/5 rounded-lg p-3">
-                        <p class="text-gray-400 text-xs mb-1">Status</p>
-                        <p id="modalStatusText" class="text-white text-sm font-medium">Offline</p>
-                    </div>
-                </div>
-                
-                <div id="modalBadgesContainer" class="bg-white/5 rounded-lg p-3 hidden">
-                    <p class="text-gray-400 text-xs mb-2">Badges</p>
-                    <div id="modalBadges" class="flex flex-wrap gap-2"></div>
-                </div>
-                
-                <div id="modalCustomStatus" class="bg-white/5 rounded-lg p-3 hidden">
-                    <p class="text-gray-400 text-xs mb-1">Custom Status</p>
-                    <p id="modalCustomStatusText" class="text-white text-sm">-</p>
-                </div>
-            </div>
+<body class="min-h-screen flex items-center justify-center p-4 md:p-6">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="text-center">
+            <div class="loader mx-auto mb-4"></div>
+            <p class="text-white text-lg font-semibold">Loading Profile...</p>
+            <p class="text-gray-400 text-sm mt-2">Fetching data from Lanyard API</p>
         </div>
     </div>
-</div>
 
-<!-- Main Profile Card -->
-<div id="profileCard" class="w-full max-w-xl opacity-0">
-    <div class="glass rounded-2xl overflow-hidden shadow-2xl">
+    <!-- Main Card -->
+    <div id="profileCard" class="glass rounded-3xl shadow-2xl w-full max-w-md overflow-hidden opacity-0 transition-opacity duration-500">
         <!-- Banner -->
-        <div class="relative h-48 md:h-56">
-            <img id="banner" src="./azura.webp" alt="Banner" class="w-full h-full object-cover">
-            <div class="absolute inset-0 banner-gradient"></div>
+        <div class="relative h-48 bg-gradient-to-br from-purple-600 via-blue-500 to-pink-500">
+            <img id="bannerImg" src="./azura.webp" alt="Banner" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#1a1b1e] to-transparent"></div>
         </div>
         
-        <!-- Profile Section -->
-        <div class="px-6 md:px-8 pb-6 md:pb-8">
+        <!-- Profile Content -->
+        <div class="relative px-6 pb-6">
             <!-- Avatar -->
-            <div class="flex items-end justify-between -mt-16 mb-4">
-                <div class="avatar-wrapper">
-                    <img id="avatar" src="" alt="Avatar" class="avatar-img">
-                    <img id="avatarDecoration" src="" alt="Avatar Decoration" class="avatar-deco hidden">
+            <div class="flex justify-between items-end -mt-16 mb-4">
+                <div class="avatar-wrapper cursor-pointer" onclick="openModal()">
+                    <img id="avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar" class="avatar-img border-8 border-[#1a1b1e]">
+                    <img id="avatarDeco" src="" alt="Decoration" class="avatar-deco hidden">
                     <div id="statusIndicator" class="status-indicator status-offline"></div>
                 </div>
-                
-                <!-- Badges -->
-                <div id="badges" class="flex gap-1.5 pb-2"></div>
+                <button id="messageBtn" class="bg-[#5865f2] hover:bg-[#4752c4] text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95">
+                    Message
+                </button>
             </div>
             
             <!-- User Info -->
-            <div class="mb-6">
-                <div class="flex items-center gap-2 mb-1">
-                    <h1 id="username" class="text-2xl md:text-3xl font-bold text-white">Loading...</h1>
-                    <i id="ownerCrown" class="fas fa-crown text-yellow-400 text-lg hidden" title="Server Owner"></i>
+            <div class="mb-5">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                    <h1 id="displayName" class="text-white text-2xl font-bold">Loading...</h1>
+                    <div id="badges" class="flex gap-1"></div>
                 </div>
-                <p id="userTag" class="text-gray-400 text-sm mb-3">@username</p>
-                <p id="customStatus" class="text-gray-300 text-sm hidden"></p>
+                <p id="username" class="text-gray-400 text-sm mb-3">@username</p>
+                <p id="customStatus" class="text-gray-300 text-sm flex items-center gap-2 hidden">
+                    <span id="statusEmoji"></span>
+                    <span id="statusText"></span>
+                </p>
             </div>
             
-            <!-- Activities Container -->
-            <div id="activitiesContainer" class="space-y-3 mb-6"></div>
+            <!-- About Me -->
+            <div class="mb-5">
+                <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2">About Me</h3>
+                <p id="bio" class="text-gray-300 text-sm leading-relaxed">No bio available</p>
+            </div>
+            
+            <!-- Activities -->
+            <div id="activitiesSection" class="hidden">
+                <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-3">Activity</h3>
+                <div id="activities" class="space-y-3"></div>
+            </div>
             
             <!-- Spotify -->
-            <div id="spotifyCard" class="spotify-card bg-white/5 rounded-xl p-4 mb-6 hidden">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <i class="fab fa-spotify text-[#1DB954] text-xl"></i>
-                        <span class="text-white text-sm font-semibold">Listening to Spotify</span>
-                    </div>
-                    <i class="fas fa-music text-gray-500 text-xs"></i>
-                </div>
-                <div class="flex items-center gap-3">
-                    <img id="spotifyAlbum" src="" alt="Album" class="w-16 h-16 rounded-lg object-cover">
-                    <div class="flex-1 min-w-0">
-                        <p id="spotifySong" class="text-white font-semibold text-sm truncate">-</p>
-                        <p id="spotifyArtist" class="text-gray-400 text-xs truncate">-</p>
-                        <p id="spotifyAlbumName" class="text-gray-500 text-xs truncate">-</p>
-                    </div>
-                </div>
-                <div class="mt-3">
-                    <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
-                        <span id="spotifyProgress">0:00</span>
-                        <span id="spotifyDuration">0:00</span>
-                    </div>
-                    <div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
-                        <div id="spotifyProgressBar" class="progress-bar h-full rounded-full" style="width: 0%"></div>
+            <div id="spotifySection" class="hidden mt-5">
+                <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-3">
+                    <i class="fab fa-spotify text-green-500 mr-1"></i> Listening to Spotify
+                </h3>
+                <div class="activity-card rounded-xl p-4">
+                    <div class="flex gap-3">
+                        <img id="spotifyAlbum" src="" alt="Album" class="w-20 h-20 rounded-lg object-cover">
+                        <div class="flex-1 min-w-0">
+                            <p id="spotifyTrack" class="text-white font-semibold text-sm truncate">Track Name</p>
+                            <p id="spotifyArtist" class="text-gray-400 text-xs truncate mt-1">Artist Name</p>
+                            <p id="spotifyAlbumName" class="text-gray-500 text-xs truncate">Album Name</p>
+                            <div class="progress-bar">
+                                <div id="spotifyProgress" class="progress-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Social Links -->
-            <div class="flex items-center justify-center gap-4">
-                <a href="https://discord.com/users/1250654354344775703" target="_blank" class="social-icon w-11 h-11 rounded-xl bg-[#5865F2]/10 hover:bg-[#5865F2]/20 flex items-center justify-center group">
-                    <i class="fab fa-discord text-[#5865F2] text-lg group-hover:scale-110 transition-transform"></i>
-                </a>
-                <a href="#" target="_blank" class="social-icon w-11 h-11 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center group">
-                    <i class="fab fa-twitter text-white text-lg group-hover:scale-110 transition-transform"></i>
-                </a>
-                <a href="#" target="_blank" class="social-icon w-11 h-11 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center group">
-                    <i class="fab fa-github text-white text-lg group-hover:scale-110 transition-transform"></i>
-                </a>
-                <a href="#" target="_blank" class="social-icon w-11 h-11 rounded-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 flex items-center justify-center group">
-                    <i class="fab fa-instagram text-white text-lg group-hover:scale-110 transition-transform"></i>
-                </a>
             </div>
         </div>
     </div>
-    
-    <!-- Footer -->
-    <p class="text-center text-gray-500 text-xs mt-4">Powered by @LeonXyz</p>
-</div>
+
+    <!-- Avatar Modal -->
+    <div id="avatarModal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content glass rounded-3xl p-6 max-w-sm w-full" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-start mb-4">
+                <h2 class="text-white text-xl font-bold">Avatar</h2>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="flex justify-center mb-4">
+                <div class="avatar-wrapper">
+                    <img id="modalAvatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar" class="avatar-img">
+                    <img id="modalAvatarDeco" src="" alt="Decoration" class="avatar-deco hidden">
+                </div>
+            </div>
+            <div class="text-center">
+                <p id="modalUsername" class="text-white font-semibold text-lg"></p>
+                <p class="text-gray-400 text-sm mt-1">Click outside to close</p>
+            </div>
+        </div>
+    </div>
 
 <script>
-    const USER_ID = '1250654354344775703';
-    const LANYARD_API = `https://api.lanyard.rest/v1/users/${USER_ID}`;
+    // CONFIGURE YOUR DISCORD USER ID HERE
+    const DISCORD_ID = '852760926843963422'; // Replace with actual Discord ID
+    const LANYARD_API = `https://api.lanyard.rest/v1/users/${DISCORD_ID}`;
     
-    // Badge definitions
-    const BADGES = {
-        STAFF: { icon: 'fa-shield-halved', color: '#5865F2', title: 'Discord Staff' },
-        PARTNER: { icon: 'fa-handshake', color: '#5865F2', title: 'Partnered Server Owner' },
-        HYPESQUAD_EVENTS: { icon: 'fa-star', color: '#F47B67', title: 'HypeSquad Events' },
-        BUG_HUNTER_LEVEL_1: { icon: 'fa-bug', color: '#57F287', title: 'Bug Hunter Level 1' },
-        HOUSE_BRAVERY: { icon: 'fa-shield', color: '#9C84EF', title: 'House of Bravery' },
-        HOUSE_BRILLIANCE: { icon: 'fa-gem', color: '#F47B67', title: 'House of Brilliance' },
-        HOUSE_BALANCE: { icon: 'fa-scale-balanced', color: '#57F287', title: 'House of Balance' },
-        EARLY_SUPPORTER: { icon: 'fa-heart', color: '#F47B67', title: 'Early Supporter' },
-        BUG_HUNTER_LEVEL_2: { icon: 'fa-bug', color: '#FEE75C', title: 'Bug Hunter Level 2' },
-        VERIFIED_BOT: { icon: 'fa-robot', color: '#57F287', title: 'Verified Bot' },
-        VERIFIED_DEVELOPER: { icon: 'fa-code', color: '#57F287', title: 'Early Verified Bot Developer' },
-        CERTIFIED_MODERATOR: { icon: 'fa-graduation-cap', color: '#57F287', title: 'Moderator Programs Alumni' },
-        BOT_HTTP_INTERACTIONS: { icon: 'fa-slash', color: '#57F287', title: 'HTTP Interactions Bot' },
-        ACTIVE_DEVELOPER: { icon: 'fa-flask', color: '#57F287', title: 'Active Developer' },
-        NITRO: { icon: 'fa-bolt', color: '#B588FF', title: 'Nitro Subscriber' },
-        BOOSTER: { icon: 'fa-rocket', color: '#FF73FA', title: 'Server Booster' }
-    };
+    let updateInterval;
     
-    let currentData = null;
-    let spotifyInterval = null;
-    
-    // Format time
-    function formatTime(ms) {
-        const totalSeconds = Math.floor(ms / 1000);
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    }
-    
-    // Get avatar URL
-    function getAvatarUrl(user) {
-        if (user.avatar) {
-            const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
-            return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=256`;
-        }
-        return `https://cdn.discordapp.com/embed/avatars/${(parseInt(user.discriminator) || 0) % 5}.png`;
-    }
-    
-    // Update status
-    function updateStatus(status) {
-        const indicator = document.getElementById('statusIndicator');
-        const modalStatus = document.getElementById('modalStatus');
-        const statusText = document.getElementById('modalStatusText');
-        
-        indicator.className = 'status-indicator';
-        modalStatus.className = 'absolute bottom-1 right-1 w-7 h-7 rounded-full border-4 border-[#181922]';
-        
-        let statusClass = 'status-offline';
-        let statusName = 'Offline';
-        
-        if (status === 'online') {
-            statusClass = 'status-online';
-            statusName = 'Online';
-        } else if (status === 'idle') {
-            statusClass = 'status-idle';
-            statusName = 'Idle';
-        } else if (status === 'dnd') {
-            statusClass = 'status-dnd';
-            statusName = 'Do Not Disturb';
-        }
-        
-        indicator.classList.add(statusClass);
-        modalStatus.classList.add(statusClass);
-        statusText.textContent = statusName;
-    }
-    
-    // Update badges
-    function updateBadges(flags) {
-        const badgesContainer = document.getElementById('badges');
-        const modalBadgesContainer = document.getElementById('modalBadgesContainer');
-        const modalBadges = document.getElementById('modalBadges');
-        
-        badgesContainer.innerHTML = '';
-        modalBadges.innerHTML = '';
-        
-        let hasBadges = false;
-        
-        // Public flags mapping
-        const flagMap = {
-            1: 'STAFF',
-            2: 'PARTNER',
-            4: 'HYPESQUAD_EVENTS',
-            8: 'BUG_HUNTER_LEVEL_1',
-            64: 'HOUSE_BRAVERY',
-            128: 'HOUSE_BRILLIANCE',
-            256: 'HOUSE_BALANCE',
-            512: 'EARLY_SUPPORTER',
-            16384: 'BUG_HUNTER_LEVEL_2',
-            65536: 'VERIFIED_BOT',
-            131072: 'VERIFIED_DEVELOPER',
-            262144: 'CERTIFIED_MODERATOR',
-            524288: 'BOT_HTTP_INTERACTIONS',
-            4194304: 'ACTIVE_DEVELOPER'
-        };
-        
-        for (const [flag, badge] of Object.entries(flagMap)) {
-            if (flags & flag && BADGES[badge]) {
-                hasBadges = true;
-                const badgeEl = document.createElement('div');
-                badgeEl.className = 'badge w-8 h-8 rounded-lg flex items-center justify-center cursor-help';
-                badgeEl.style.backgroundColor = BADGES[badge].color + '20';
-                badgeEl.title = BADGES[badge].title;
-                badgeEl.innerHTML = `<i class="fas ${BADGES[badge].icon}" style="color: ${BADGES[badge].color}; font-size: 14px;"></i>`;
-                badgesContainer.appendChild(badgeEl);
-                
-                const modalBadgeEl = badgeEl.cloneNode(true);
-                modalBadges.appendChild(modalBadgeEl);
-            }
-        }
-        
-        if (hasBadges) {
-            modalBadgesContainer.classList.remove('hidden');
-        }
-    }
-    
-    // Update Spotify
-    function updateSpotify(spotify) {
-        const card = document.getElementById('spotifyCard');
-        
-        if (!spotify) {
-            card.classList.add('hidden');
-            if (spotifyInterval) {
-                clearInterval(spotifyInterval);
-                spotifyInterval = null;
-            }
-            return;
-        }
-        
-        card.classList.remove('hidden');
-        document.getElementById('spotifyAlbum').src = spotify.album_art_url;
-        document.getElementById('spotifySong').textContent = spotify.song;
-        document.getElementById('spotifyArtist').textContent = spotify.artist;
-        document.getElementById('spotifyAlbumName').textContent = spotify.album;
-        
-        const updateProgress = () => {
-            const now = Date.now();
-            const elapsed = now - spotify.timestamps.start;
-            const duration = spotify.timestamps.end - spotify.timestamps.start;
-            const progress = Math.min((elapsed / duration) * 100, 100);
+    // Fetch data from Lanyard REST API
+    async function fetchLanyardData() {
+        try {
+            const response = await fetch(LANYARD_API);
+            const data = await response.json();
             
-            document.getElementById('spotifyProgressBar').style.width = progress + '%';
-            document.getElementById('spotifyProgress').textContent = formatTime(elapsed);
-            document.getElementById('spotifyDuration').textContent = formatTime(duration);
-        };
-        
-        updateProgress();
-        if (spotifyInterval) clearInterval(spotifyInterval);
-        spotifyInterval = setInterval(updateProgress, 1000);
-    }
-    
-    // Update activities
-    function updateActivities(activities) {
-        const container = document.getElementById('activitiesContainer');
-        container.innerHTML = '';
-        
-        const nonSpotifyActivities = activities.filter(a => a.type !== 2);
-        
-        nonSpotifyActivities.forEach(activity => {
-            const card = document.createElement('div');
-            card.className = 'activity-card bg-white/5 rounded-xl p-4';
-            
-            let icon = 'fa-gamepad';
-            let typeText = 'Playing';
-            
-            if (activity.type === 0) {
-                icon = 'fa-gamepad';
-                typeText = 'Playing';
-            } else if (activity.type === 1) {
-                icon = 'fa-video';
-                typeText = 'Streaming';
-            } else if (activity.type === 3) {
-                icon = 'fa-tv';
-                typeText = 'Watching';
-            } else if (activity.type === 4) {
-                icon = 'fa-comment';
-                typeText = '';
-            } else if (activity.type === 5) {
-                icon = 'fa-trophy';
-                typeText = 'Competing in';
-            }
-            
-            let details = '';
-            if (activity.type === 4 && activity.state) {
-                document.getElementById('customStatus').textContent = activity.state;
-                document.getElementById('customStatus').classList.remove('hidden');
-                document.getElementById('modalCustomStatus').classList.remove('hidden');
-                document.getElementById('modalCustomStatusText').textContent = activity.state;
-                return;
+            if (data.success) {
+                updateProfile(data.data);
+                hideLoading();
             } else {
-                document.getElementById('customStatus').classList.add('hidden');
-                document.getElementById('modalCustomStatus').classList.add('hidden');
+                showError();
             }
-            
-            card.innerHTML = `
-                <div class="flex items-center gap-2 mb-2">
-                    <i class="fas ${icon} text-gray-400 text-sm"></i>
-                    <span class="text-gray-400 text-xs font-medium uppercase">${typeText}</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    ${activity.assets?.large_image ? `
-                        <img src="https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png" 
-                             alt="${activity.name}" 
-                             class="w-14 h-14 rounded-lg object-cover">
-                    ` : ''}
-                    <div class="flex-1 min-w-0">
-                        <p class="text-white font-semibold text-sm truncate">${activity.name}</p>
-                        ${activity.details ? `<p class="text-gray-400 text-xs truncate">${activity.details}</p>` : ''}
-                        ${activity.state ? `<p class="text-gray-500 text-xs truncate">${activity.state}</p>` : ''}
-                    </div>
-                </div>
-            `;
-            
-            container.appendChild(card);
-        });
+        } catch (error) {
+            console.error('Error fetching Lanyard data:', error);
+            showError();
+        }
     }
     
-    // Update profile
-    function updateProfile(data) {
-        currentData = data;
-        const user = data.discord_user;
+    function updateProfile(user) {
+        // Avatar and decoration
+        const avatarUrl = user.discord_user.avatar 
+            ? `https://cdn.discordapp.com/avatars/${user.discord_user.id}/${user.discord_user.avatar}.${user.discord_user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=512`
+            : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discord_user.discriminator) % 5}.png`;
         
-        // Avatar
-        const avatarUrl = getAvatarUrl(user);
         document.getElementById('avatar').src = avatarUrl;
         document.getElementById('modalAvatar').src = avatarUrl;
         
-        // Avatar decoration
-        if (user.avatar_decoration_data) {
-            const decoUrl = `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png?size=160`;
-            document.getElementById('avatarDecoration').src = decoUrl;
-            document.getElementById('avatarDecoration').classList.remove('hidden');
+        if (user.discord_user.avatar_decoration_data) {
+            const decoUrl = `https://cdn.discordapp.com/avatar-decoration-presets/${user.discord_user.avatar_decoration_data.asset}.png?size=512`;
+            document.getElementById('avatarDeco').src = decoUrl;
+            document.getElementById('avatarDeco').classList.remove('hidden');
+            document.getElementById('modalAvatarDeco').src = decoUrl;
+            document.getElementById('modalAvatarDeco').classList.remove('hidden');
         }
         
-        // Username
-        const displayName = user.global_name || user.username;
-        document.getElementById('username').textContent = displayName;
-        document.getElementById('modalUsername').textContent = displayName;
-        document.getElementById('userTag').textContent = `@${user.username}`;
-        document.getElementById('modalUserTag').textContent = `@${user.username}`;
-        document.getElementById('modalUserId').textContent = user.id;
+        // User info
+        document.getElementById('displayName').textContent = user.discord_user.global_name || user.discord_user.username;
+        document.getElementById('username').textContent = `@${user.discord_user.username}`;
+        document.getElementById('modalUsername').textContent = user.discord_user.global_name || user.discord_user.username;
         
         // Status
-        updateStatus(data.discord_status);
+        const statusIndicator = document.getElementById('statusIndicator');
+        statusIndicator.className = `status-indicator status-${user.discord_status}`;
         
-        // Badges
-        updateBadges(user.public_flags || 0);
+        // Custom status
+        if (user.activities && user.activities.length > 0) {
+            const customStatus = user.activities.find(a => a.type === 4);
+            if (customStatus) {
+                document.getElementById('customStatus').classList.remove('hidden');
+                document.getElementById('statusEmoji').textContent = customStatus.emoji ? customStatus.emoji.name : '';
+                document.getElementById('statusText').textContent = customStatus.state || '';
+            } else {
+                document.getElementById('customStatus').classList.add('hidden');
+            }
+        }
+        
+        // Badges - Public flags
+        const badges = document.getElementById('badges');
+        badges.innerHTML = '';
+        if (user.discord_user.public_flags) {
+            const flags = user.discord_user.public_flags;
+            const badgeMap = {
+                1: { icon: 'fa-medal', title: 'Staff', color: 'text-[#f4c034]' },
+                2: { icon: 'fa-handshake', title: 'Partner', color: 'text-[#5865f2]' },
+                4: { icon: 'fa-bolt', title: 'HypeSquad', color: 'text-[#f4c034]' },
+                8: { icon: 'fa-bug', title: 'Bug Hunter', color: 'text-[#41cf71]' },
+                64: { icon: 'fa-house', title: 'HypeSquad Bravery', color: 'text-[#9c84ef]' },
+                128: { icon: 'fa-gem', title: 'HypeSquad Brilliance', color: 'text-[#f47b67]' },
+                256: { icon: 'fa-coins', title: 'HypeSquad Balance', color: 'text-[#45ddc0]' },
+                512: { icon: 'fa-star', title: 'Early Supporter', color: 'text-[#9c84ef]' }
+            };
+            
+            Object.keys(badgeMap).forEach(flag => {
+                if (flags & flag) {
+                    const badge = badgeMap[flag];
+                    badges.innerHTML += `
+                        <div class="badge" title="${badge.title}">
+                            <i class="fas ${badge.icon} ${badge.color} text-xs"></i>
+                        </div>
+                    `;
+                }
+            });
+        }
+        
+        // Premium/Display name decoration
+        if (user.discord_user.premium_type) {
+            const nitroBadge = user.discord_user.premium_type === 2 
+                ? { icon: 'fa-rocket', title: 'Nitro', color: 'text-[#ff73fa]' }
+                : { icon: 'fa-star', title: 'Nitro Classic', color: 'text-[#7289da]' };
+            badges.innerHTML += `
+                <div class="badge" title="${nitroBadge.title}">
+                    <i class="fas ${nitroBadge.icon} ${nitroBadge.color} text-xs"></i>
+                </div>
+            `;
+        }
         
         // Activities
-        updateActivities(data.activities || []);
+        updateActivities(user.activities);
         
         // Spotify
-        updateSpotify(data.spotify);
-        
-        // Hide loading screen
-        setTimeout(() => {
-            document.getElementById('loadingScreen').classList.add('hidden');
-            document.getElementById('profileCard').classList.add('fade-in');
-            document.getElementById('profileCard').style.opacity = '1';
-        }, 500);
-    }
-    
-    // Fetch data from Lanyard
-    async function fetchLanyard() {
-        try {
-            const response = await fetch(LANYARD_API);
-            const { data } = await response.json();
-            updateProfile(data);
-        } catch (error) {
-            console.error('Failed to fetch Lanyard data:', error);
-            document.getElementById('username').textContent = 'Failed to load';
-            document.getElementById('loadingScreen').classList.add('hidden');
-            document.getElementById('profileCard').style.opacity = '1';
+        if (user.listening_to_spotify && user.spotify) {
+            updateSpotify(user.spotify);
+        } else {
+            document.getElementById('spotifySection').classList.add('hidden');
         }
     }
     
-    // Modal handlers
-    document.getElementById('avatar').addEventListener('click', () => {
-        document.getElementById('profileModal').classList.add('active');
-    });
-    
-    document.getElementById('closeModal').addEventListener('click', () => {
-        document.getElementById('profileModal').classList.remove('active');
-    });
-    
-    document.getElementById('profileModal').addEventListener('click', (e) => {
-        if (e.target.id === 'profileModal') {
-            document.getElementById('profileModal').classList.remove('active');
+    function updateActivities(activities) {
+        const activitiesDiv = document.getElementById('activities');
+        const section = document.getElementById('activitiesSection');
+        
+        if (!activities || activities.length === 0) {
+            section.classList.add('hidden');
+            return;
         }
-    });
-    
-    // WebSocket for real-time updates
-    function connectWebSocket() {
-        const ws = new WebSocket('wss://api.lanyard.rest/socket');
         
-        ws.onopen = () => {
-            ws.send(JSON.stringify({
-                op: 2,
-                d: { subscribe_to_id: USER_ID }
-            }));
-        };
+        // Filter out custom status and Spotify
+        const gameActivities = activities.filter(a => a.type !== 4 && a.id !== 'spotify:1');
         
-        ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.t === 'INIT_STATE' || data.t === 'PRESENCE_UPDATE') {
-                updateProfile(data.d);
-            }
-        };
+        if (gameActivities.length === 0) {
+            section.classList.add('hidden');
+            return;
+        }
         
-        ws.onerror = () => {
-            console.error('WebSocket error, falling back to HTTP');
-            fetchLanyard();
-        };
+        section.classList.remove('hidden');
+        activitiesDiv.innerHTML = '';
         
-        ws.onclose = () => {
-            setTimeout(connectWebSocket, 5000);
-        };
+        gameActivities.forEach(activity => {
+            let icon = 'fa-gamepad';
+            let color = 'text-purple-400';
+            let label = 'Playing';
+            
+            if (activity.type === 1) { icon = 'fa-video'; color = 'text-red-400'; label = 'Streaming'; }
+            else if (activity.type === 2) { icon = 'fa-headphones'; color = 'text-green-400'; label = 'Listening to'; }
+            else if (activity.type === 3) { icon = 'fa-eye'; color = 'text-blue-400'; label = 'Watching'; }
+            
+            const largeImage = activity.assets?.large_image 
+                ? `https://cdn.discordapp.com/app-assets/${activity.application_id}/${activity.assets.large_image}.png`
+                : null;
+            
+            activitiesDiv.innerHTML += `
+                <div class="activity-card rounded-xl p-4">
+                    <div class="flex gap-3">
+                        ${largeImage ? `<img src="${largeImage}" alt="${activity.name}" class="w-16 h-16 rounded-lg object-cover">` : `<div class="w-16 h-16 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center"><i class="fas ${icon} text-2xl text-white"></i></div>`}
+                        <div class="flex-1 min-w-0">
+                            <p class="text-gray-400 text-xs font-semibold uppercase mb-1">
+                                <i class="fas ${icon} ${color} mr-1"></i>${label}
+                            </p>
+                            <p class="text-white font-semibold text-sm truncate">${activity.name}</p>
+                            ${activity.details ? `<p class="text-gray-400 text-xs truncate mt-1">${activity.details}</p>` : ''}
+                            ${activity.state ? `<p class="text-gray-500 text-xs truncate">${activity.state}</p>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
     }
     
-    // Initialize
-    fetchLanyard();
-    connectWebSocket();
+    function updateSpotify(spotify) {
+        const section = document.getElementById('spotifySection');
+        section.classList.remove('hidden');
+        
+        document.getElementById('spotifyAlbum').src = spotify.album_art_url;
+        document.getElementById('spotifyTrack').textContent = spotify.song;
+        document.getElementById('spotifyArtist').textContent = spotify.artist;
+        document.getElementById('spotifyAlbumName').textContent = spotify.album;
+        
+        // Progress bar
+        const start = spotify.timestamps.start;
+        const end = spotify.timestamps.end;
+        const now = Date.now();
+        const progress = ((now - start) / (end - start)) * 100;
+        document.getElementById('spotifyProgress').style.width = `${Math.min(Math.max(progress, 0), 100)}%`;
+    }
     
-    // Refresh every 30s as fallback
-    setInterval(fetchLanyard, 30000);
+    function hideLoading() {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('profileCard').style.opacity = '1';
+    }
+    
+    function showError() {
+        document.getElementById('loadingScreen').innerHTML = `
+            <div class="text-center">
+                <i class="fas fa-exclamation-circle text-red-500 text-5xl mb-4"></i>
+                <p class="text-white text-lg font-semibold">Failed to Load Profile</p>
+                <p class="text-gray-400 text-sm mt-2">Please check the Discord ID and try again</p>
+                <button onclick="location.reload()" class="mt-4 bg-[#5865f2] hover:bg-[#4752c4] text-white px-6 py-2 rounded-lg font-semibold text-sm transition-all">Retry</button>
+            </div>
+        `;
+    }
+    
+    function openModal() {
+        document.getElementById('avatarModal').classList.add('active');
+    }
+    
+    function closeModal(event) {
+        if (!event || event.target.id === 'avatarModal') {
+            document.getElementById('avatarModal').classList.remove('active');
+        }
+    }
+    
+    document.getElementById('messageBtn').addEventListener('click', () => {
+        window.open(`https://discord.com/users/${DISCORD_ID}`, '_blank');
+    });
+    
+    // Initial fetch
+    fetchLanyardData();
+    
+    // Update every 10 seconds using REST API only
+    updateInterval = setInterval(fetchLanyardData, 10000);
+    
+    // ESC to close modal
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
 </script>
 <script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
 </body>
