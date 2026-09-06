@@ -371,6 +371,24 @@
 .quick:hover {
   background: #ddd;
 }
+
+    .recharge-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.recharge-grid button {
+  padding: 16px 10px;
+  border-radius: 14px;
+  background: #f3f3f3;
+  color: #111;
+  font-size: 14px;
+}
+
+.recharge-grid button:hover {
+  background: #e7e7e7;
+}
   </style>
 </head>
 
@@ -417,9 +435,9 @@
     + Add Coins
   </button>
 
-  <button class="action-btn secondary" onclick="resetDemo()">
-    ↻ Reset
-  </button>
+  <button class="action-btn" onclick="openRecharge()">
+  🪙 Recharge
+</button>
 </div>
 
   </div>
@@ -547,7 +565,7 @@
   }
 
   function addCoins() {
-    const amount = 10000;
+    const amount = 10000000;
 
     coins += amount;
 
