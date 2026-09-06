@@ -1,219 +1,709 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Auth System</title>
-    <style>
-        /* Base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wallet Demo — Simulation</title>
 
-        body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, Arial, sans-serif;
+    }
 
-        /* Form container */
-        .form-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            min-height: 500px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
+    body {
+      background: #f5f5f7;
+      color: #161616;
+      min-height: 100vh;
+    }
 
-        /* Form panels */
-        .form {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            padding: 40px;
-            background: white;
-            transition: 1s;
-        }
+    .app {
+      width: 100%;
+      max-width: 430px;
+      margin: auto;
+      min-height: 100vh;
+      background: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 35px rgba(0,0,0,.08);
+    }
 
-        /* Social login buttons */
-        .social-login {
-            margin: 20px 0;
-            display: flex;
-            gap: 15px;
-        }
+    .demo-banner {
+      background: #fff3cd;
+      color: #765900;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px;
+      letter-spacing: .3px;
+    }
 
-        .social-login a {
-            flex: 1;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            border: 1px solid #ddd;
-            transition: all 0.3s;
-        }
+    header {
+      padding: 20px 20px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+    }
 
-        .social-login a:hover {
-            background: #f0f0f0;
-        }
+    header h1 {
+      font-size: 21px;
+    }
 
-        /* Form fields */
-        .form-group {
-            margin-bottom: 20px;
-        }
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #111, #555);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
 
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            transition: border-color 0.3s;
-        }
+    .profile {
+      padding: 20px;
+      display: flex;
+      gap: 13px;
+      align-items: center;
+    }
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
+    .profile-info strong {
+      display: block;
+      font-size: 16px;
+    }
 
-        /* Toggle button */
-        .toggle-btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+    .profile-info span {
+      color: #777;
+      font-size: 13px;
+    }
 
-        .toggle-btn:hover {
-            background: #556ee6;
-        }
+    .balance-card {
+      margin: 0 20px;
+      padding: 24px;
+      border-radius: 20px;
+      color: white;
+      background: linear-gradient(135deg, #171717, #333);
+      box-shadow: 0 12px 30px rgba(0,0,0,.18);
+    }
 
-        /* Category section */
-        .category-section {
-            padding: 40px;
-            background: #f8f9fa;
-        }
+    .balance-label {
+      font-size: 12px;
+      opacity: .7;
+    }
 
-        .category {
-            margin-bottom: 30px;
-        }
+    .coins {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 8px 0 2px;
+    }
 
-        .category h2 {
-            margin-bottom: 15px;
-            color: #333;
-        }
+    .coin-icon {
+      width: 27px;
+      height: 27px;
+      background: #ffd84d;
+      color: #6b5200;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+    }
 
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-        }
+    .coin-number {
+      font-size: 31px;
+      font-weight: 800;
+    }
 
-        .category-card {
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
+    .peso {
+      font-size: 14px;
+      opacity: .65;
+      margin-bottom: 20px;
+    }
 
-        .category-card:hover {
-            transform: translateY(-5px);
-        }
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
 
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .form-container {
-                margin: 20px;
-                min-height: 400px;
-            }
-        }
-    </style>
+    button {
+      border: 0;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      background: white;
+      color: #161616;
+    }
+
+    .action-btn.secondary {
+      background: rgba(255,255,255,.14);
+      color: white;
+      border: 1px solid rgba(255,255,255,.2);
+    }
+
+    section {
+      padding: 24px 20px 0;
+    }
+
+    section h2 {
+      font-size: 17px;
+      margin-bottom: 13px;
+    }
+
+    .bank-card {
+      border: 1px solid #e9e9e9;
+      border-radius: 16px;
+      padding: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .bank-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .bank-logo {
+      width: 43px;
+      height: 43px;
+      border-radius: 12px;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+    }
+
+    .bank-name {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .bank-number {
+      color: #888;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .verified {
+      font-size: 11px;
+      color: #238636;
+      background: #e9f8ed;
+      padding: 5px 8px;
+      border-radius: 20px;
+      font-weight: 700;
+    }
+
+    .transaction {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .transaction:last-child {
+      border-bottom: 0;
+    }
+
+    .tx-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tx-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tx-title {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .tx-date {
+      font-size: 11px;
+      color: #999;
+      margin-top: 3px;
+    }
+
+    .tx-amount {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .plus {
+      color: #159447;
+    }
+
+    .minus {
+      color: #e04b4b;
+    }
+
+    .bottom-nav {
+      margin-top: 30px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-around;
+      padding: 14px 0;
+      position: sticky;
+      bottom: 0;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-item {
+      font-size: 11px;
+      color: #888;
+      text-align: center;
+    }
+
+    .nav-item.active {
+      color: #111;
+      font-weight: 800;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      border-radius: 24px 24px 0 0;
+      padding: 24px;
+      animation: slideUp .25s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-box h3 {
+      margin-bottom: 17px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .confirm {
+      width: 100%;
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 12px;
+      background: #111;
+      color: white;
+    }
+
+    .close {
+      width: 100%;
+      margin-top: 8px;
+      padding: 12px;
+      background: #eee;
+      border-radius: 12px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 80px;
+      transform: translateX(-50%) translateY(20px);
+      background: #111;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 30px;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+      z-index: 20;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+      .quick {
+  flex: 1;
+  padding: 10px 5px;
+  border-radius: 10px;
+  background: #f1f1f1;
+  color: #222;
+  font-size: 12px;
+}
+
+.quick:hover {
+  background: #ddd;
+}
+  </style>
 </head>
-<body>
-    <div class="form-container" id="formContainer">
-        <!-- Login form -->
-        <form class="form login-form" id="loginForm">
-            <h2>Sign In</h2>
-            <div class="social-login">
-                <a href="#"><i class="fab fa-google"></i> Sign in with Google</a>
-                <a href="#"><i class="fab fa-facebook-f"></i> Sign in with Facebook</a>
-            </div>
-            <div class="form-group">
-                <input type="email" placeholder="Email Address" required>
-            </div>
-            <div class="form-group">
-                <input type="password" placeholder="Password" required>
-            </div>
-            <button type="submit" class="toggle-btn">Sign In</button>
-        </form>
 
-        <!-- Signup form -->
-        <form class="form signup-form" id="signupForm">
-            <h2>Create Account</h2>
-            <div class="social-login">
-                <a href="#"><i class="fab fa-google"></i> Sign up with Google</a>
-                <a href="#"><i class="fab fa-facebook-f"></i> Sign up with Facebook</a>
-            </div>
-            <div class="form-group">
-                <input type="text" placeholder="Full Name" required>
-            </div>
-            <div class="form-group">
-                <input type="email" placeholder="Email Address" required>
-            </div>
-            <div class="form-group">
-                <input type="password" placeholder="Password" required>
-            </div>
-            <button type="submit" class="toggle-btn">Create Account</button>
-        </form>
+<body>
+
+<div class="app">
+
+  <div class="demo-banner">
+    ⚠️ DEMO SIMULATION — NO REAL MONEY OR ACCOUNT DATA
+  </div>
+
+  <header>
+    <h1>Wallet</h1>
+    <div class="avatar">JD</div>
+  </header>
+
+  <div class="profile">
+    <div class="avatar">JD</div>
+    <div class="profile-info">
+      <strong>Juan Demo</strong>
+      <span>@demo_user</span>
+    </div>
+  </div>
+
+  <div class="balance-card">
+
+    <div class="balance-label">Demo Coin Balance</div>
+
+    <div class="coins">
+      <div class="coin-icon">₵</div>
+      <div class="coin-number" id="coinBalance">128,450</div>
     </div>
 
-    <!-- Category section -->
-    <section class="category-section">
-        <div class="category">
-            <h2>$ AT ABOVE ALL</h2>
-            <div class="category-grid">
-                <div class="category-card">Row 1</div>
-                <div class="category-card">Row 2</div>
-            </div>
-        </div>
-        <div class="category">
-            <h2>STAFF</h2>
-            <div class="category-grid">
-                <div class="category-card">Row 1</div>
-                <div class="category-card">Row 2</div>
-            </div>
-        </div>
-        <div class="category">
-            <h2>SCROLLINGMEMBER</h2>
-            <div class="category-grid">
-                <div class="category-card">Row 1</div>
-                <div class="category-card">Row 2</div>
-            </div>
-        </div>
-    </section>
+    <div class="peso">
+      ≈ ₱12,845.00 simulated value
+    </div>
 
-    <script>
-        // JavaScript for form toggle (you'll need Font Awesome for icons)
-        document.querySelectorAll('.toggle-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const form = btn.closest('.form');
-                form.style.left = form === document.querySelector('.login-form') ? '100%' : '0';
-            });
-        });
-    </script>
+    <div class="actions">
+  <button class="action-btn" onclick="openModal('withdraw')">
+    Withdraw
+  </button>
+
+  <button class="action-btn secondary" onclick="addCoins()">
+    + Add Coins
+  </button>
+
+  <button class="action-btn secondary" onclick="resetDemo()">
+    ↻ Reset
+  </button>
+</div>
+
+  </div>
+
+  <section>
+    <h2>Linked Bank</h2>
+
+    <div class="bank-card">
+      <div class="bank-left">
+        <div class="bank-logo">DB</div>
+
+        <div>
+          <div class="bank-name">Demo Bank</div>
+          <div class="bank-number">•••• •••• 4821</div>
+        </div>
+      </div>
+
+      <div class="verified">DEMO</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Recent Activity</h2>
+
+    <div id="transactions">
+
+      <div class="transaction">
+        <div class="tx-left">
+          <div class="tx-icon">＋</div>
+          <div>
+            <div class="tx-title">Demo Coins Added</div>
+            <div class="tx-date">Today, 10:42 AM</div>
+          </div>
+        </div>
+        <div class="tx-amount plus">+50,000</div>
+      </div>
+
+      <div class="transaction">
+        <div class="tx-left">
+          <div class="tx-icon">↓</div>
+          <div>
+            <div class="tx-title">Demo Withdrawal</div>
+            <div class="tx-date">Yesterday, 4:21 PM</div>
+          </div>
+        </div>
+        <div class="tx-amount minus">-25,000</div>
+      </div>
+
+      <div class="transaction">
+        <div class="tx-left">
+          <div class="tx-icon">＋</div>
+          <div>
+            <div class="tx-title">Demo Gift Reward</div>
+            <div class="tx-date">Sep 5, 2026</div>
+          </div>
+        </div>
+        <div class="tx-amount plus">+12,450</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="bottom-nav">
+    <div class="nav-item">⌂<br>Home</div>
+    <div class="nav-item active">◉<br>Wallet</div>
+    <div class="nav-item">↗<br>Activity</div>
+    <div class="nav-item">♙<br>Profile</div>
+  </div>
+
+</div>
+
+<!-- Withdraw Modal -->
+<div class="modal" id="withdrawModal">
+
+  <div class="modal-box">
+
+    <h3>Demo Withdrawal</h3>
+
+    <p style="font-size:12px;color:#777;margin-bottom:14px;">
+      This only changes the simulated balance. No real transaction will occur.
+    </p>
+
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+  <button class="quick" onclick="setWithdraw(1000)">1K</button>
+  <button class="quick" onclick="setWithdraw(5000)">5K</button>
+  <button class="quick" onclick="setWithdraw(10000)">10K</button>
+  <button class="quick" onclick="setWithdraw(25000)">25K</button>
+</div>
+
+<input
+  id="withdrawAmount"
+  type="number"
+  placeholder="Enter demo coins"
+  min="1"
+/>
+
+    <button class="confirm" onclick="withdrawCoins()">
+      Confirm Demo Withdrawal
+    </button>
+
+    <button class="close" onclick="closeModal()">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+  let coins = 128450;
+
+  const balance = document.getElementById("coinBalance");
+  const modal = document.getElementById("withdrawModal");
+  const toast = document.getElementById("toast");
+
+  function formatNumber(number) {
+    return number.toLocaleString("en-US");
+  }
+
+  function updateBalance() {
+    balance.textContent = formatNumber(coins);
+  }
+
+  function addCoins() {
+    const amount = 10000;
+
+    coins += amount;
+
+    updateBalance();
+
+    addTransaction(
+      "Demo Coins Added",
+      `+${formatNumber(amount)}`,
+      "plus"
+    );
+
+    showToast("+10,000 demo coins added");
+  }
+
+  function openModal(type) {
+    if (type === "withdraw") {
+      modal.classList.add("show");
+      document.getElementById("withdrawAmount").focus();
+    }
+  }
+
+  function closeModal() {
+    modal.classList.remove("show");
+    document.getElementById("withdrawAmount").value = "";
+  }
+
+  function withdrawCoins() {
+
+    const input = document.getElementById("withdrawAmount");
+    const amount = Number(input.value);
+
+    if (!amount || amount <= 0) {
+      showToast("Enter a valid amount");
+      return;
+    }
+
+    if (amount > coins) {
+      showToast("Not enough demo coins");
+      return;
+    }
+
+    coins -= amount;
+
+    updateBalance();
+
+    addTransaction(
+      "Demo Withdrawal",
+      `-${formatNumber(amount)}`,
+      "minus"
+    );
+
+    closeModal();
+
+    showToast(
+      `${formatNumber(amount)} demo coins withdrawn`
+    );
+  }
+
+  function addTransaction(title, amount, type) {
+
+    const container =
+      document.getElementById("transactions");
+
+    const transaction =
+      document.createElement("div");
+
+    transaction.className = "transaction";
+
+    transaction.innerHTML = `
+      <div class="tx-left">
+        <div class="tx-icon">
+          ${type === "plus" ? "＋" : "↓"}
+        </div>
+
+        <div>
+          <div class="tx-title">
+            ${title}
+          </div>
+
+          <div class="tx-date">
+            Just now
+          </div>
+        </div>
+      </div>
+
+      <div class="tx-amount ${type}">
+        ${amount}
+      </div>
+    `;
+
+    container.prepend(transaction);
+  }
+
+  function showToast(message) {
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2200);
+  }
+
+  modal.addEventListener("click", function(e) {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+    function setWithdraw(amount) {
+  document.getElementById("withdrawAmount").value = amount;
+}
+
+function resetDemo() {
+  coins = 128450;
+  updateBalance();
+
+  document.getElementById("transactions").innerHTML = `
+    <div class="transaction">
+      <div class="tx-left">
+        <div class="tx-icon">＋</div>
+        <div>
+          <div class="tx-title">Demo Coins Added</div>
+          <div class="tx-date">Today, 10:42 AM</div>
+        </div>
+      </div>
+      <div class="tx-amount plus">+50,000</div>
+    </div>
+
+    <div class="transaction">
+      <div class="tx-left">
+        <div class="tx-icon">↓</div>
+        <div>
+          <div class="tx-title">Demo Withdrawal</div>
+          <div class="tx-date">Yesterday, 4:21 PM</div>
+        </div>
+      </div>
+      <div class="tx-amount minus">-25,000</div>
+    </div>
+
+    <div class="transaction">
+      <div class="tx-left">
+        <div class="tx-icon">＋</div>
+        <div>
+          <div class="tx-title">Demo Gift Reward</div>
+          <div class="tx-date">Sep 5, 2026</div>
+        </div>
+      </div>
+      <div class="tx-amount plus">+12,450</div>
+    </div>
+  `;
+
+  showToast("Demo wallet reset!");
+}
+
+</script>
+
 </body>
 </html>
